@@ -1,6 +1,6 @@
-const {
-  convertTimestampToDate
-} = require("../db/seeds/utils");
+const { convertTimestampToDate, createLookupObj } = require("../db/seeds/utils");
+
+
 
 describe("convertTimestampToDate", () => {
   test("returns a new object", () => {
@@ -38,3 +38,25 @@ describe("convertTimestampToDate", () => {
   });
 });
 
+describe("createLookupObj", () => {
+  test("return an empty object when receives an empty array", () => {
+    const input = [];
+    const result = createLookupObj(input, "slug", "description");
+    expect(result).toEqual({});
+  })
+
+   test("returns an object with the value of the first argument as key and the value of the second one as value", () => {
+    const input = [{ slug: "coding", description: "All about programming" }];
+    const result = createLookupObj(input, "slug", "description");
+    expect(result).toEqual({coding: "All about programming"});
+  });
+
+    test("function should not change original array passed as argument", () => {
+    const input = [{ slug: "coding", description: "Programming stuff" }];
+    const inputCopy = [...input];
+    createLookupObj(input, "slug", "description");
+    expect(input).toEqual(inputCopy);
+  });
+
+
+});
