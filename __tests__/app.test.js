@@ -17,7 +17,7 @@ afterAll(() => {
 
 
 describe("GET /api", () => {
-  test.skip("200: Responds with an object detailing the documentation for each endpoint", () => {
+  test("200: Responds with an object detailing the documentation for each endpoint", () => {
     return request(app)
       .get("/api")
       .expect(200)
@@ -28,7 +28,7 @@ describe("GET /api", () => {
 });
 
 describe("GET /api/topics", () => {
-  test.skip("returns an array of topic objects containg 2 keys, slug and drescription", () => {
+  test("returns an array of topic objects containg 2 keys, slug and drescription", () => {
     return request(app)
       .get("/api/topics")
       .expect(200)
