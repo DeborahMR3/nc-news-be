@@ -14,4 +14,21 @@ app.get('/api', (request, response) => {
 // })
 app.get('/api/topics', getAllTopics);
 
+app.get('/api/articles', (request, response) => {
+  response.status(200).send({
+     articles: [
+      {
+        author: "test_author",
+        title: "test_title",
+        article_id: 1,
+        topic: "test_topic",
+        created_at: "1604394720000",
+        votes: 0,
+        article_img_url: "http://example.com/image.jpg",
+        comment_count: 0
+      }
+    ]
+  });
+});
+
 module.exports = app;

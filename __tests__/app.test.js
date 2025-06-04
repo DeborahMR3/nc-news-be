@@ -43,3 +43,59 @@ describe("GET /api/topics", () => {
       });
   });
 });
+
+describe("GET /api/articles", () => {
+  test("returns an object with the key of articles and the value of an array of article objects", () => {
+    return request(app)
+    .get("/api/articles")
+    .expect(200)
+    .then(( { body }) => {
+      expect(body).toHaveProperty("articles");
+      expect(Array.isArray(body.articles)).toBe(true);
+    })
+  })
+
+  test.skip("cehck that each article returned has all the properties: author, title, article_id, topic, created_at, votes, article_img_url AND comment_count", () => {
+    return request(app)
+    .get("/api/articles")
+    .expect(200)
+    .then(( { body }) => {
+      expect(body).toHaveProperty("articles");
+      expect(Array.isArray(body.articles)).toBe(true); // tem que ser array
+
+      // const firstArticle = body.articles[0]
+      // expect(firstArticle).toHaveProperty("author");  IRIA SER IMPOSSIVEL CHECAR ASSIM
+
+      body.articles.forEach((article) => {
+        expect(article).toHaveProperty("author");
+        expect(article).toHaveProperty("title");
+        expect(article).toHaveProperty("article_id");
+        expect(article).toHaveProperty("topic");
+        expect(article).toHaveProperty("created_at");
+        expect(article).toHaveProperty("votes");
+        expect(article).toHaveProperty("article_img_url");
+        expect(article).toHaveProperty("comment_count");
+      });
+    });
+  });
+
+  test("the articles should be sorted by date in descending order.", () => {
+    return request(app)
+    .get("/api/articles")
+    .expect(200)
+    .then(( { body }) => {
+        const articleArray = body.articles
+        for (let i= 0; i < articleArray.length - 1; i++) {  // na ultima volta nao vai ter o proximo item!!
+          expect(articleArray[i].created_at).toBeGreaterThan(articleArray[i + 1].created_at);
+        };
+    });
+  });
+
+
+
+  test.skip("there should not be a body property present on any of the article objects..", () => {
+
+  })
+
+
+});
