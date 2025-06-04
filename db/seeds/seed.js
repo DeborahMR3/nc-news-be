@@ -92,9 +92,6 @@ const seed = ({ topicData, userData, articleData, commentData }) => {
       ]);
       const queryStr = format(`INSERT INTO articles (title, topic, author, body, created_at, votes, article_img_url) VALUES %L RETURNING *;`, formattedArticles);
       return db.query(queryStr);
-
-
-
     })
 
     .then((result) => {

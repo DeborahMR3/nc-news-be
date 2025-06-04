@@ -8,3 +8,12 @@ function getAllTopics(request, response) {
 }
 
 module.exports = { getAllTopics };
+
+
+
+// function getAllArticles(request, response) {
+//   fetchAllArticles()
+//   .then((result) => {
+//     response.status(200).send( { articles: result })
+//   })
+// }
