@@ -17,7 +17,7 @@ afterAll(() => {
 
 
 describe("GET /api", () => {
-  test("200: Responds with an object detailing the documentation for each endpoint", () => {
+  test("GET - 200: Responds with an object detailing the documentation for each endpoint", () => {
     return request(app)
       .get("/api")
       .expect(200)
@@ -28,7 +28,7 @@ describe("GET /api", () => {
 });
 
 describe("GET /api/topics", () => {
-  test("returns an array of topic objects containg 2 keys, slug and drescription", () => {
+  test('GET - 200: responds with an array of topic objects, each containing "slug" and "description" properties', () => {
     return request(app)
       .get("/api/topics")
       .expect(200)
@@ -45,7 +45,7 @@ describe("GET /api/topics", () => {
 });
 
 describe("GET /api/articles", () => {
-  test("returns an object with the key of articles and the value of an array of article objects", () => {
+  test('GET - 200: responds with an object with the key "articles" and the value as an array of article objects', () => {
     return request(app)
     .get("/api/articles")
     .expect(200)
@@ -55,7 +55,7 @@ describe("GET /api/articles", () => {
     })
   })
 
-  test("cehck that each article returned has all the properties: author, title, article_id, topic, created_at, votes, article_img_url AND comment_count", () => {
+  test('GET - 200: each article object contains "author", "title", "article_id", "topic", "created_at", "votes", "article_img_url", and "comment_count"', () => {
     return request(app)
     .get("/api/articles")
     .expect(200)
@@ -78,7 +78,7 @@ describe("GET /api/articles", () => {
     });
   });
 
-  test("the articles should be sorted by date in descending order.", () => {
+  test('GET - 200: returns articles sorted by "created_at" date in descending order', () => {
     return request(app)
     .get("/api/articles")
     .expect(200)
@@ -97,7 +97,7 @@ describe("GET /api/articles", () => {
     });
   });
 
-  test("there should not be a body property present on any of the article objects..", () => {
+  test('GET - 200: does not include "body" property on any article object', () => {
     return request(app)
     .get("/api/articles")
     .expect(200)

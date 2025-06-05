@@ -50,7 +50,7 @@ const seed = ({ topicData, userData, articleData, commentData }) => {
     })
 
     // Criar tabela comments
-    .then(() => {
+    .then(() => {      // ON DELETE CASCADE NOT NULL -> se deletar o artigo, apaga os comentários juntos.
       return db.query(`
         CREATE TABLE comments (
           comment_id SERIAL PRIMARY KEY,
