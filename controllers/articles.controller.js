@@ -7,7 +7,7 @@ function getAllArticles(request, response) {
   .then((result) => {
     response.status(200).send( { articles: result })
   })
-}
+};
 
 
 function getArticleById(request, response, next) {
@@ -20,5 +20,5 @@ function getArticleById(request, response, next) {
     .catch(next); /// Isso manda qualquer erro para os handlers de erro
 
 
-}
+};
 module.exports = { getAllArticles, getArticleById };
