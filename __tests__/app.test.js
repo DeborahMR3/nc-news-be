@@ -104,7 +104,7 @@ describe("GET /api/articles", () => {
     .then(({ body }) => {
       body.articles.forEach(article => {
         expect(article.body).toBeUndefined();
-      });
+      })
     });
 
   })

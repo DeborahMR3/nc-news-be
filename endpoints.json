@@ -30,11 +30,28 @@
     "exampleResponse": {
       "users": [
         {
-          "username": "icellusedkars",
+          "username": "username do Joao",
           "name": "joao",
-          "avatar_url": "https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png"
+          "avatar_url": "https://www.avatardojoaopng"
         }
       ]
+    }
+  },
+
+  "GET /api/articles/:article_id": {
+    "description": "serves an article object corresponding to the given article_id",
+    "queries": [],
+    "exampleResponse": {
+      "article": {
+        "author": "o nome de um autor",
+        "title": "um livro desse autor",
+        "article_id": 1,
+        "body": "uma descricao otima",
+        "topic": "mitch",
+        "created_at": "2020-07-09T20:11:00.000Z",
+        "votes": 100,
+        "article_img_url": "https://images.com/1"
+      }
     }
   }
 

@@ -25,7 +25,7 @@ function fetchArticleById(article_id) {
   return db.query(` SELECT * FROM articles WHERE article_id = $1`, [article_id])
   .then((result) => {
      if (result.rows.length === 0) { // se nao achar um artigo com o ID passado
-      return Promise.reject({ status: 404, msg: "not found" });
+      return Promise.reject({ status: 404, msg: "not found" }); // passa daqui para linha 20 do controller
      }
     return result.rows[0];
   })
