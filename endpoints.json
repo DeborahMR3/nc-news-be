@@ -23,5 +23,21 @@
         }
       ]
     }
+  },
+
+    "GET /api/users": {
+    "description": "serves an array of all user objects",
+    "exampleResponse": {
+      "users": [
+        {
+          "username": "icellusedkars",
+          "name": "joao",
+          "avatar_url": "https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png"
+        }
+      ]
+    }
   }
+
+
+
 }
