@@ -159,3 +159,87 @@ describe('GET /api/articles/:article_id', () => {
 
 
 });
+
+describe('GET /api/articles/:article_id/comments', () => {
+  test('GET - 200: responds with an object containing a "comments" array for a valid article_id (with comments)', () => {
+    return request(app)
+      .get('/api/articles/1/comments')
+      .expect(200)
+      .then(({ body }) => {
+        expect(Array.isArray(body.comments)).toBe(true);
+        body.comments.forEach((comment) => {
+          expect(comment).toHaveProperty('comment_id');
+          expect(comment).toHaveProperty('votes');
+          expect(comment).toHaveProperty('created_at');
+          expect(comment).toHaveProperty('author');
+          expect(comment).toHaveProperty('body');
+          expect(comment).toHaveProperty('article_id', 1); // artigo certo
+        });
+      });
+  });
+
+  test('GET - 200: responds with an empty array if the article exists but has no comments', () => {
+    return request(app)
+      .get('/api/articles/2/comments') // use um article_id que exista e não tenha comentários
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.comments).toEqual([]);
+      });
+  });
+
+  test('GET - 200: comments are ordered from most recent first', () => {
+    return request(app)
+      .get('/api/articles/1/comments')
+      .expect(200)
+      .then(({ body }) => {
+        const comments = body.comments;
+        for (let i = 0; i < comments.length - 1; i++) {
+          const current = new Date(comments[i].created_at).getTime();
+          const next = new Date(comments[i + 1].created_at).getTime();
+          expect(current).toBeGreaterThanOrEqual(next);
+        }
+      });
+  });
+
+  test('GET - 400: responds with bad request if article_id is not a number', () => {
+    return request(app)
+      .get('/api/articles/bolo/comments')
+      .expect(400)
+      .then(({ body }) => {
+        expect(body).toEqual({ msg: "bad request" });
+      });
+  });
+
+  test('GET - 200: responds with empty array if article_id does not exist', () => {
+    return request(app)
+      .get('/api/articles/99999/comments')
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.comments).toEqual([]);
+      });
+  });
+});
+
+
+describe('POST /api/articles/:article_id/comments', () => {
+  test('201: posts/Adds a new comment for an article that already exists', () => {
+    const novoComentario = {
+    username: "icellusedkars",
+    body: "Comentário autoexplicativo"
+    };
+
+    return request(app)
+    .post('/api/articles/1/comments')
+    .send(novoComentario)
+    .expect(201)
+    .then(({ body }) => {
+      const comment = body.comment;
+      expect(comment).toHaveProperty('comment_id');
+      expect(comment).toHaveProperty('body', "Comentário autoexplicativo");
+      expect(comment).toHaveProperty('article_id', 1);
+      expect(comment).toHaveProperty('author', "icellusedkars");
+      expect(comment).toHaveProperty('votes', 0);
+      expect(typeof comment.created_at).toBe("string");
+      });
+  });
+});

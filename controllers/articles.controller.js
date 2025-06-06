@@ -2,6 +2,10 @@ const { fetchAllArticles } = require('../models/articles.model');
 
 const { fetchArticleById } = require('../models/articles.model');
 
+const { fetchCommentsByArticleId } = require('../models/articles.model');
+
+const { insertComment } = require('../models/articles.model');
+
 function getAllArticles(request, response) {
   fetchAllArticles()
   .then((result) => {
@@ -20,7 +24,30 @@ function getArticleById(request, response, next) {
     .catch((err) => {
       next(err)
 
-    })/// Isso manda qualquer erro para os handlers de erro
+    })
 };
 
-module.exports = { getAllArticles, getArticleById };
+function getCommentsByArticleId(request, response, next) {
+  const { article_id } = request.params;
+  fetchCommentsByArticleId(article_id)
+    .then((comments) => {
+      response.status(200).send({ comments });
+    })
+    .catch(next);
+};
+
+function postCommentByArticleId(request, response, next) {
+  const { article_id } = request.params;
+  const { username, body } = request.body;
+
+  fetchArticleById(article_id)
+    .then(() => {
+      return insertComment(article_id, username, body);
+    })
+    .then((comment) => {
+      response.status(201).send({ comment });
+    })
+    .catch(next);
+}
+
+module.exports = { getAllArticles, getArticleById, getCommentsByArticleId, postCommentByArticleId };
