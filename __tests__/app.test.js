@@ -126,3 +126,36 @@ describe('GET /api/users', () => {
       });
   });
 });
+
+describe('GET /api/articles/:article_id', () => {
+  test('GET - 200: returns an object with a key of Article containing the following properties:author, title, article_id, body,topic,created_at, votes, article_img_url ', () => {
+    return request(app)
+    .get('/api/articles/1')
+    .expect(200)
+    .then(( { body }) => {
+      expect(body).toHaveProperty('article')
+
+      const article = body.article
+
+      expect(article).toHaveProperty('author')
+      expect(article).toHaveProperty('title')
+      expect(article).toHaveProperty('article_id')
+      expect(article).toHaveProperty('body')
+      expect(article).toHaveProperty('topic')
+      expect(article).toHaveProperty('created_at')
+      expect(article).toHaveProperty('votes')
+      expect(article).toHaveProperty('article_img_url')
+    })
+  });
+
+  test('GET - 400: responds with bad request if article_id is not a number', () => {
+    return request(app)
+    .get('/api/articles/cookies')
+    .expect(400)
+    .then(( { body }) => {
+       expect(body).toEqual({ msg: "bad request" });
+    });
+  });
+
+
+});

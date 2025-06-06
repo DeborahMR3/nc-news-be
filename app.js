@@ -6,6 +6,7 @@ const endpoints = require('./endpoints.json');
 const { getAllTopics } = require("./controllers/topics.controller");
 const { getAllArticles } = require("./controllers/articles.controller");
 const { getAllUsers } = require('./controllers/users.controller');
+const { getArticleById } = require('./controllers/articles.controller');
 const { handlePostgresErrors } = require('./errors');
 
 app.get('/api', (request, response) => {
@@ -21,6 +22,7 @@ app.get('/api/articles', getAllArticles);
 
 app.get('/api/users', getAllUsers);
 
+app.get('/api/articles/:article_id', getArticleById)
 
 app.use(handlePostgresErrors) // funcao esta em erros.js
 
