@@ -110,3 +110,19 @@ describe("GET /api/articles", () => {
   })
 
 });
+
+describe('GET /api/users', () => {
+  test('GET - 200: responds with an array of user objects, each containing "username", "name", and "avatar_url"', () => {
+    return request(app)
+      .get('/api/users')
+      .expect(200)
+      .then(({ body }) => {  // <- aqui eu acesso o body.  //deve retornar um objeto com key user e um array de objetos, cada ojeto desse array[] deve ter as propriedades corretas
+        expect(Array.isArray(body.users)).toBe(true);
+        body.users.forEach(user => {
+          expect(typeof user.username).toBe("string");
+          expect(typeof user.name).toBe("string");
+          expect(typeof user.avatar_url).toBe("string");
+        });
+      });
+  });
+});
