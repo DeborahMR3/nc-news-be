@@ -1,4 +1,4 @@
-const { fetchCommentsByArticleId, insertComment } = require('../models/comments.model');
+const { fetchCommentsByArticleId, insertComment, removeCommentById } = require('../models/comments.model');
 
 function getCommentsByArticleId(request, response, next) {
   const { article_id } = request.params;
@@ -20,4 +20,16 @@ function postCommentByArticleId(request, response, next) {
     .catch(next);
 }
 
-module.exports = { getCommentsByArticleId, postCommentByArticleId };
+//delete
+
+function deleteCommentById(request, response, next) {
+  const { comment_id } = request.params
+  removeCommentById(comment_id)
+    .then((result) => {
+      response.status(204).send(); //tem que send sem nada dentro. {} isso eh reconhecido como algo
+    })
+    .catch(next)
+
+}
+
+module.exports = { getCommentsByArticleId, postCommentByArticleId, deleteCommentById  };

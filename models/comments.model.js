@@ -21,7 +21,23 @@ function insertComment(article_id, username, body) {
   .then(({ rows }) => rows[0]);
 }
 
-module.exports = { fetchCommentsByArticleId, insertComment };
+function removeCommentById(comment_id) {
+  if (isNaN(Number(comment_id))) {
+    return Promise.reject({ status: 400, msg: 'bad request' }); // tem que ser um numero
+  }
+  return db.query(
+    `DELETE FROM comments WHERE comment_id = $1 RETURNING *;`, [comment_id])
+.then((result) => {
+      // Se nenhum comentário foi deletado, não existia esse id
+      if (result.rowCount === 0) { // checa que um objeto foi modificado, se for === 1 significa que o comment_id existia e um comentario foi deletado
+        return Promise.reject({ status: 404, msg: 'Comment not found' });
+      }
+      // Se deu certo, só retorna undefined
+    });
+
+}
+
+module.exports = { fetchCommentsByArticleId, insertComment, removeCommentById};
 
 // const db = require('../db/connection');
 

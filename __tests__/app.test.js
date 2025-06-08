@@ -308,3 +308,32 @@ describe('PATCH /api/articles/:article_id', () => {
   });
 
 });
+
+describe('DELETE /api/comments/:comment_id', () => {
+  test('204: deletes the comment and responds with no content', () => {
+    return request(app)
+      .delete('/api/comments/1')
+      .expect(204)
+      .then((response) => {
+        expect(response.body).toEqual({});
+      });
+  });
+
+  test('404: responds with an error when comment_id does not exist', () => {
+  return request(app)
+    .delete('/api/comments/64433') // um id que não existe
+    .expect(404)
+    .then(({ body }) => {
+      expect(body.msg).toBe('Comment not found');
+    });
+  });
+  test('400: responds with an error when comment_id is not a number', () => {
+  return request(app)
+    .delete('/api/comments/banana')
+    .expect(400)
+    .then(({ body }) => {
+      expect(body.msg).toBe("bad request");
+    });
+});
+
+});
