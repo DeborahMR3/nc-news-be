@@ -3,7 +3,7 @@ const { fetchCommentsByArticleId, insertComment } = require('../models/comments.
 function getCommentsByArticleId(request, response, next) {
   const { article_id } = request.params;
   fetchCommentsByArticleId(article_id)
-    .then((comments) => {
+    .then((comments) => {  // aqui eu acesso o resultado do db query? me retorna uma promise
       response.status(200).send({ comments });
     })
     .catch(next);

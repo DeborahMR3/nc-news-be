@@ -243,3 +243,68 @@ describe('POST /api/articles/:article_id/comments', () => {
       });
   });
 });
+
+describe('PATCH /api/articles/:article_id', () => {
+  test('200: responds with the updated article with updated votes', () => {
+  return request(app)
+    .get('/api/articles/1')
+    .then(({ body }) => {
+      const originalVotes = body.article.votes; // numero de votes no inicio
+      return request(app)
+        .patch('/api/articles/1')
+        .send({ inc_votes: -100 })
+        .expect(200)
+        .then(({ body }) => {
+          const article = body.article;
+          expect(article.article_id).toBe(1);
+          // Checa se votos realmente diminuiu 100
+          expect(article.votes).toBe(originalVotes - 100);
+        });
+    });
+  });
+
+  test('404: responds with an error when article_id does not exist', () => {
+  // tenta atualizar um artigo que não existe
+  return request(app)
+    .patch('/api/articles/99999')
+    .send({ inc_votes: 1 })
+    .expect(404)
+    .then(({ body }) => {
+      expect(body.msg).toBeDefined();
+      expect(body.msg).toBe('Article not found');
+    })
+  });
+
+  test('400: responds with an error when article_id is not a number', () => {
+  return request(app)
+    .patch('/api/articles/banana')
+    .send({ inc_votes: 1 })
+    .expect(400)
+    .then(({ body }) => {
+      expect(body.msg).toBe("bad request");
+    });
+  });
+
+  test('400: responds with an error when inc_votes isnt passed', () => {
+  // faz PATCH mas não manda inc_votes
+  return request(app)
+    .patch('/api/articles/1')
+    .send({})
+    .expect(400)
+    .then(({ body }) => {
+      expect(body.msg).toBe("bad request");
+    });
+  });
+
+  test('400: responds with an error when inc_votes is not a number', () => {
+    // faz PATCH enviando uma string no lugar de número
+    return request(app)
+      .patch('/api/articles/1')
+      .send({ inc_votes: "banana" })
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("bad request");
+      });
+  });
+
+});

@@ -9,9 +9,9 @@ const { getAllArticles } = require("./controllers/articles.controller");
 const { getAllUsers } = require('./controllers/users.controller');
 const { getArticleById } = require('./controllers/articles.controller');
 
-// AQUI TROQUEI
-// const { getCommentsByArticleId } = require('./controllers/comments.controller');
+
 const { getCommentsByArticleId, postCommentByArticleId } = require('./controllers/comments.controller');
+const { patchArticleById } = require('./controllers/articles.controller');
 
 
 const { handlePostgresErrors, handleCustomErrors, handleServerErrors } = require('./errors')
@@ -31,6 +31,8 @@ app.get('/api/articles/:article_id', getArticleById);
 app.get('/api/articles/:article_id/comments', getCommentsByArticleId);
 
 app.post('/api/articles/:article_id/comments', postCommentByArticleId);
+
+app.patch('/api/articles/:article_id', patchArticleById);
 
 //  middlewares de erro ABAIXO:
 app.use(handlePostgresErrors);
