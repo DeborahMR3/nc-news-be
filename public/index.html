@@ -1,46 +1,136 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css">
-  <title>Nc News API Docs</title>
-</head>
-<body>
-  <header>
-    <h1>Nc News Project</h1>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>NC News API Docs</title>
+  </head>
+  <body>
+    <header>
+      <h1>NC News Project</h1>
       <nav>
         <ul>
+          <li><a href="#get-api">GET /api</a></li>
           <li><a href="#get-topics">GET /api/topics</a></li>
           <li><a href="#get-articles">GET /api/articles</a></li>
-          <li><a href="#get-comments">GET /api/comments</a></li>
+          <li><a href="#get-article-id">GET /api/articles/:article_id</a></li>
+          <li><a href="#patch-article-id">PATCH /api/articles/:article_id</a></li>
+          <li><a href="#get-article-id-comments">GET /api/articles/:article_id/comments</a></li>
+          <li><a href="#post-article-id-comments">POST /api/articles/:article_id/comments</a></li>
+          <li><a href="#patch-comment-id">PATCH /api/comments/:comment_id</a></li>
+          <li><a href="#delete-comment-id">DELETE /api/comments/:comment_id</a></li>
+          <li><a href="#get-users">GET /api/users</a></li>
+          <li><a href="#get-user-id">GET /api/users/:username</a></li>
         </ul>
       </nav>
-  </header>
+    </header>
 
-  <main>
-    <section id="get-topics">
-      <h2>GET /api/topics</h2>
-      <p>Retorna todos os tópicos disponíveis na aplicação.</p>
-    </section>
+    <main>
+      <!--
+        Todas as descrições abaixo estão em inglês; apenas estes comentários ficam em português.
+      -->
 
-    <section id="get-articles">
-      <h2>GET /api/articles</h2>
-      <p>Retorna todos os articles disponíveis na aplicação.</p>
-    </section>
+      <section id="get-api">
+        <h2>GET /api</h2>
+        <p>Returns a JSON object describing all available endpoints.</p>
+        <h4>Example response</h4>
+        <pre><code>{
+  "endpoints": {
+    "/api": "...",
+    "/api/topics": "...",
+    <!-- truncated for brevity -->
+  }
+}</code></pre>
+      </section>
 
-   <section id="get-comments">
-      <h2>GET /api/comments</h2>
-      <p>Retorna todos os comments disponíveis na aplicação.</p>
-    </section>
+      <section id="get-topics">
+        <h2>GET /api/topics</h2>
+        <p>Returns an array of topic objects. Each object contains:</p>
+        <ul>
+          <li><code>slug</code> &ndash; the topic name</li>
+          <li><code>description</code> &ndash; a short description</li>
+        </ul>
+      </section>
 
-    <!-- <section>
-      detalhes de um endpoint
-    </section> -->
-  </main>
+      <section id="get-articles">
+        <h2>GET /api/articles</h2>
+        <p>Returns an array of article objects with <code>comment_count</code>.</p>
+        <h4>Query parameters</h4>
+        <ul>
+          <li><code>topic</code> &ndash; filter by topic</li>
+          <li><code>sort_by</code> &ndash; column to sort (default <code>created_at</code>)</li>
+          <li><code>order</code> &ndash; <code>asc</code> or <code>desc</code> (default <code>desc</code>)</li>
+          <li><code>limit</code> &ndash; results per page (default 10)</li>
+          <li><code>p</code> &ndash; page number (default 1)</li>
+        </ul>
+      </section>
 
-  <footer>
-    <p></p>
-  </footer>
-</body>
+      <section id="get-article-id">
+        <h2>GET /api/articles/:article_id</h2>
+        <p>Returns a single article object matching <code>:article_id</code>.</p>
+      </section>
+
+      <section id="patch-article-id">
+        <h2>PATCH /api/articles/:article_id</h2>
+        <p>Increments an article's vote count.</p>
+        <h4>Request body</h4>
+        <pre><code>{ "inc_votes": 1 }</code></pre>
+        <p>The endpoint responds with the updated article object.</p>
+      </section>
+
+      <section id="get-article-id-comments">
+        <h2>GET /api/articles/:article_id/comments</h2>
+        <p>Returns an array of comments for the specified article.</p>
+        <h4>Query parameters</h4>
+        <ul>
+          <li><code>limit</code> &ndash; results per page (default 10)</li>
+          <li><code>p</code> &ndash; page number (default 1)</li>
+        </ul>
+      </section>
+
+      <section id="post-article-id-comments">
+        <h2>POST /api/articles/:article_id/comments</h2>
+        <p>Creates a new comment on the specified article.</p>
+        <h4>Request body</h4>
+        <pre><code>{
+  "username": "butter_bridge",
+  "body": "Great article!"
+}</code></pre>
+        <p>The endpoint responds with the posted comment.</p>
+      </section>
+
+      <section id="patch-comment-id">
+        <h2>PATCH /api/comments/:comment_id</h2>
+        <p>Updates a comment's vote count.</p>
+        <h4>Request body</h4>
+        <pre><code>{ "inc_votes": -1 }</code></pre>
+        <p>Responds with the updated comment.</p>
+      </section>
+
+      <section id="delete-comment-id">
+        <h2>DELETE /api/comments/:comment_id</h2>
+        <p>Deletes the specified comment. Responds with status code <code>204 No Content</code>.</p>
+      </section>
+
+      <section id="get-users">
+        <h2>GET /api/users</h2>
+        <p>Returns an array of user objects.</p>
+      </section>
+
+      <section id="get-user-id">
+        <h2>GET /api/users/:username</h2>
+        <p>Returns a single user object matching <code>:username</code>.</p>
+      </section>
+
+      <!--
+        Para adicionar endpoints futuros, basta copiar um bloco <section> como este
+        e adaptar título, ID e conteúdo.  Assim mantenho a documentação
+      -->
+    </main>
+
+    <footer>
+      <p>© 2025 NC News API</p>
+    </footer>
+  </body>
 </html>
