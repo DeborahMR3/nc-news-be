@@ -1,13 +1,12 @@
 const express = require("express");
 const app = express();
-app.use(express.json());  // nao endenti isso
+app.use(express.json());
 const db = require("./db/connection")
 const endpoints = require('./endpoints.json');
 
 
-
 // mapeia a rota "/api/docs" para a pasta "public/
-// app.use('/api/docs', express.static('public'));
+app.use('/api/docs', express.static('public'));
 
 
 const { getAllTopics } = require("./controllers/topics.controller");
