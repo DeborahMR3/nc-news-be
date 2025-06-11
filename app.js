@@ -5,6 +5,13 @@ const db = require("./db/connection")
 const endpoints = require('./endpoints.json');
 
 
+//  ➡️ rota raiz: redireciona para /api ADICIONEI PARA TENTAR FIX!!!!!!!!
+app.get("/", (req, res) => {
+  res.redirect("/api");
+});
+////////////////////
+
+
 // mapeia a rota "/api/docs" para a pasta "public/
 app.use('/api/docs', express.static('public'));
 
