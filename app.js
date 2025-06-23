@@ -4,6 +4,9 @@ app.use(express.json());
 const db = require("./db/connection")
 const endpoints = require('./endpoints.json');
 
+const cors = require('cors');
+app.use(cors());
+
 
 // //  ➡️ rota raiz: redireciona para /api ADICIONEI PARA TENTAR FIX!!!!!!!!
 // app.get("/", (req, res) => {
